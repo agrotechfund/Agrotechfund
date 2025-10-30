@@ -4213,7 +4213,6 @@ async def enviar_relatorio_periodico(app):
         print(f"⚠️ Erro ao enviar relatório periódico: {e}")
 
 import asyncio
-import aiocron
 from datetime import datetime
 
 # 🕛 Função principal automática (corrigida)
