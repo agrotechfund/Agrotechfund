@@ -6391,6 +6391,21 @@ import asyncio
 
 #print("✅ usuarios.json apagado e recriado vazio!")
 
+import requests
+import threading
+import time
+
+def manter_online():
+    while True:
+        try:
+            requests.get("https://agrotechfund.onrender.com")
+        except:
+            pass
+        time.sleep(300)  # 5 minutos
+
+# Inicia em thread separada
+threading.Thread(target=manter_online, daemon=True).start()
+
 # ✅ FUNÇÃO PRINCIPAL ASSÍNCRONA
 async def iniciar_bot():
     global usuarios, pendentes
@@ -6739,21 +6754,6 @@ async def iniciar_bot():
     web_thread.start()
     print("✅ Servidor web ativo para 24/7!")
     # 🚀 FIM DAS LINHAS ADICIONAIS
-
-    import requests
-import threading
-import time
-
-def manter_online():
-    while True:
-        try:
-            requests.get("https://agrotechfund.onrender.com")
-        except:
-            pass
-        time.sleep(300)  # 5 minutos
-
-# Inicia em thread separada
-threading.Thread(target=manter_online, daemon=True).start()
 
     await asyncio.Event().wait()
 
