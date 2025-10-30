@@ -6706,7 +6706,7 @@ async def iniciar_bot():
     # 🚀 Inicia o scheduler apenas uma vez
     scheduler.start()
 
-    aiocron.crontab("0 0 * * *", func=coleta_automatica, args=(app,))
+    #aiocron.crontab("0 0 * * *", func=coleta_automatica, args=(app,))
     
     print("🤖 Bot iniciado e rodando!")
 
