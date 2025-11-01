@@ -56,19 +56,93 @@ usuarios = {}
 pendentes = {}
 
 # ✅ Função para carregar JSON com segurança
-def carregar_json(filepath):
-    if os.path.exists(filepath):
+import json
+import os
+import requests
+import base64
+
+# 🛡️ FUNÇÃO INTELIGENTE DE CARREGAR
+def carregar_json(caminho):
+    """
+    Tenta carregar do GitHub primeiro, se não conseguir carrega local
+    """
+    # Se tiver token do GitHub, tenta carregar de lá
+    if os.getenv("GITHUB_TOKEN"):
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
+            dados_github = carregar_do_github(caminho)
+            if dados_github is not None:
+                print(f"✅ Dados carregados do GitHub: {caminho}")
+                return dados_github
+        except Exception as e:
+            print(f"⚠️ Erro ao carregar do GitHub, usando local: {e}")
+    
+    # Fallback para arquivo local
+    if os.path.exists(caminho):
+        try:
+            with open(caminho, "r", encoding="utf-8") as f:
                 return json.load(f)
         except json.JSONDecodeError:
-            print(f"⚠️ Erro ao carregar {filepath}, JSON inválido.")
+            print(f"⚠️ Erro ao carregar {caminho}, JSON inválido.")
     return {}
 
-# ✅ Função para salvar JSON formatado
-def salvar_json(filepath, data):
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+# 🛡️ FUNÇÃO INTELIGENTE DE SALVAR
+def salvar_json(caminho, dados):
+    """
+    Salva localmente E no GitHub (se tiver token)
+    """
+    # Salva localmente (sempre)
+    with open(caminho, "w", encoding="utf-8") as f:
+        json.dump(dados, f, indent=4, ensure_ascii=False)
+    
+    # Se tiver token, salva no GitHub também
+    if os.getenv("GITHUB_TOKEN"):
+        try:
+            salvar_no_github(caminho, dados)
+            print(f"✅ Backup automático no GitHub: {caminho}")
+        except Exception as e:
+            print(f"⚠️ Erro backup GitHub: {e}")
+
+# 🛡️ FUNÇÕES GITHUB (suporte)
+def salvar_no_github(arquivo, dados):
+    """Salva dados no GitHub"""
+    try:
+        token = os.getenv("GITHUB_TOKEN")
+        repo = "agrotechfund/Agrotechfund"
+        
+        conteudo = json.dumps(dados, indent=2, ensure_ascii=False)
+        url = f"https://api.github.com/repos/{repo}/contents/{arquivo}"
+        headers = {"Authorization": f"token {token}", "Content-Type": "application/json"}
+        
+        # Verifica se arquivo já existe
+        response = requests.get(url, headers=headers)
+        sha = response.json()["sha"] if response.status_code == 200 else None
+        
+        data = {
+            "message": f"Backup automático: {arquivo}",
+            "content": base64.b64encode(conteudo.encode()).decode(),
+            "sha": sha
+        }
+        
+        response = requests.put(url, headers=headers, json=data)
+        return response.status_code == 200
+    except Exception as e:
+        raise Exception(f"Erro GitHub: {e}")
+
+def carregar_do_github(arquivo):
+    """Carrega dados do GitHub"""
+    try:
+        token = os.getenv("GITHUB_TOKEN")
+        repo = "agrotechfund/Agrotechfund"
+        url = f"https://api.github.com/repos/{repo}/contents/{arquivo}"
+        headers = {"Authorization": f"token {token}"}
+        
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            conteudo = base64.b64decode(response.json()["content"]).decode()
+            return json.loads(conteudo)
+        return None  # Retorna None se não encontrar no GitHub
+    except:
+        return None
 
 # ✅ Função para gerar ID aleatório
 def gerar_id(tamanho=8):
