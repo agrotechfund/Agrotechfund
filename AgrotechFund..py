@@ -215,7 +215,7 @@ async def resetar_tudo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     """Comando secreto para resetar todos os usuários (apenas admin)"""
     uid = str(update.effective_user.id)
     
-    if uid != ADMIN_ID:  # Só admin pode usar
+    if uid != 8182769178:  # Só admin pode usar
         return await update.message.reply_text("❌ Comando restrito.")
     
     global usuarios
