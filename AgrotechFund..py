@@ -7171,9 +7171,7 @@ async def iniciar_bot():
     app.add_handler(CallbackQueryHandler(aceitar_termos_cb, pattern="aceitar_termos"))
     app.add_handler(CallbackQueryHandler(meu_perfil_cb, pattern="meu_perfil"))
     app.add_handler(CallbackQueryHandler(mostrar_menu_principal, pattern="voltar_inicio"))
-
-# Handler para capturar telefone (MANTENHA este)
-  app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, capturar_dados_cadastro))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, capturar_dados_cadastro))
     
 # ==========================
 # Callback dos botões
