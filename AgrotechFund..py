@@ -210,6 +210,20 @@ def checa_banido(func):
         return await func(update, ctx, *args, **kwargs)
     return wrapper
 
+@checa_banido
+async def resetar_tudo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Comando secreto para resetar todos os usuários (apenas admin)"""
+    uid = str(update.effective_user.id)
+    
+    if uid != ADMIN_ID:  # Só admin pode usar
+        return await update.message.reply_text("❌ Comando restrito.")
+    
+    global usuarios
+    usuarios = {}  # Limpa todos os usuários
+    salvar_json(USERS_FILE, usuarios)
+    
+    await update.message.reply_text("✅ TODOS os usuários foram resetados! Agora o novo cadastro funcionará.")
+
 # ==================== LISTA COMPLETA DE TODOS OS PAÍSES DO MUNDO ====================
 
 PAISES_AFRICA = [
@@ -7085,6 +7099,7 @@ async def iniciar_bot():
     app.add_handler(CallbackQueryHandler(aprovar_recusar_cb, pattern="^(aprovar|recusar)\\|"))
     #app.add_handler(CallbackQueryHandler(dep_mtd_cb, pattern="^dep_mtd\\|"))
     app.add_handler(CallbackQueryHandler(limpar_saldo_corrompido, pattern="^limpar_saldo$"))
+    app.add_handler(CommandHandler("reset", resetar_tudo))
 
     app.add_handler(CallbackQueryHandler(ver_pendentes, pattern="^ver_pendentes$"))
     # ✅ MENSAGENS
