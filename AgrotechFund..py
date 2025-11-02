@@ -215,7 +215,8 @@ async def resetar_tudo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     """Comando secreto para resetar todos os usuários (apenas admin)"""
     uid = str(update.effective_user.id)
     
-    if uid != 8182769178:  # Só admin pode usar
+    # Verifica tanto string quanto int
+    if uid not in [str(ADMIN_ID), ADMIN_ID, 8182769178]:
         return await update.message.reply_text("❌ Comando restrito.")
     
     global usuarios
@@ -223,7 +224,6 @@ async def resetar_tudo(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     salvar_json(USERS_FILE, usuarios)
     
     await update.message.reply_text("✅ TODOS os usuários foram resetados! Agora o novo cadastro funcionará.")
-
 # ==================== LISTA COMPLETA DE TODOS OS PAÍSES DO MUNDO ====================
 
 PAISES_AFRICA = [
