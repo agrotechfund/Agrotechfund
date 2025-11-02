@@ -210,6 +210,249 @@ def checa_banido(func):
         return await func(update, ctx, *args, **kwargs)
     return wrapper
 
+# ==================== LISTA COMPLETA DE TODOS OS PAÍSES DO MUNDO ====================
+
+PAISES_AFRICA = [
+    "🇩🇿 Argélia", "🇦🇴 Angola", "🇧🇯 Benim", "🇧🇼 Botsuana", "🇧🇫 Burquina Faso",
+    "🇧🇮 Burundi", "🇨🇻 Cabo Verde", "🇨🇲 Camarões", "🇨🇫 Chade", "🇰🇲 Comores",
+    "🇨🇩 Congo-Kinshasa", "🇨🇬 Congo-Brazzaville", "🇨🇮 Costa do Marfim", "🇪🇬 Egito",
+    "🇪🇷 Eritreia", "🇸🇿 Essuatíni", "🇪🇹 Etiópia", "🇬🇦 Gabão", "🇬🇲 Gâmbia",
+    "🇬🇭 Gana", "🇬🇳 Guiné", "🇬🇼 Guiné-Bissau", "🇬🇶 Guiné Equatorial", "🇰🇪 Quénia",
+    "🇱🇸 Lesoto", "🇱🇷 Libéria", "🇱🇾 Líbia", "🇲🇬 Madagáscar", "🇲🇼 Malawi",
+    "🇲🇱 Mali", "🇲🇷 Mauritânia", "🇲🇺 Maurícia", "🇲🇦 Marrocos", "🇲🇿 Moçambique",
+    "🇳🇦 Namíbia", "🇳🇪 Níger", "🇳🇬 Nigéria", "🇷🇼 Ruanda", "🇸🇹 São Tomé e Príncipe",
+    "🇸🇳 Senegal", "🇸🇨 Seicheles", "🇸🇱 Serra Leoa", "🇸🇴 Somália", "🇿🇦 África do Sul",
+    "🇸🇸 Sudão do Sul", "🇸🇩 Sudão", "🇹🇿 Tanzânia", "🇹🇬 Togo", "🇹🇳 Tunísia",
+    "🇺🇬 Uganda", "🇿🇲 Zâmbia", "🇿🇼 Zimbábue"
+]
+
+PAISES_AMERICA_NORTE = [
+    "🇺🇸 Estados Unidos", "🇨🇦 Canadá", "🇲🇽 México", "🇧🇸 Bahamas", "🇧🇧 Barbados",
+    "🇧🇿 Belize", "🇨🇷 Costa Rica", "🇨🇺 Cuba", "🇩🇲 Dominica", "🇸🇻 El Salvador",
+    "🇬🇩 Granada", "🇬🇹 Guatemala", "🇭🇹 Haiti", "🇭🇳 Honduras", "🇯🇲 Jamaica",
+    "🇳🇮 Nicarágua", "🇵🇦 Panamá", "🇩🇴 República Dominicana", "🇰🇳 São Cristóvão e Névis",
+    "🇱🇨 Santa Lúcia", "🇻🇨 São Vicente e Granadinas", "🇹🇹 Trinidad e Tobago"
+]
+
+PAISES_AMERICA_SUL = [
+    "🇦🇷 Argentina", "🇧🇴 Bolívia", "🇧🇷 Brasil", "🇨🇱 Chile", "🇨🇴 Colômbia",
+    "🇪🇨 Equador", "🇬🇾 Guiana", "🇵🇾 Paraguai", "🇵🇪 Peru", "🇸🇷 Suriname",
+    "🇺🇾 Uruguai", "🇻🇪 Venezuela"
+]
+
+PAISES_ASIA = [
+    "🇦🇫 Afeganistão", "🇸🇦 Arábia Saudita", "🇦🇲 Arménia", "🇦🇿 Azerbaijão", "🇧🇩 Bangladexe",
+    "🇧🇭 Barém", "🇧🇳 Brunei", "🇧🇹 Butão", "🇰🇭 Camboja", "🇶🇦 Catar", "🇨🇳 China",
+    "🇸🇬 Singapura", "🇰🇷 Coreia do Sul", "🇰🇵 Coreia do Norte", "🇰🇼 Kuwait", "🇱🇦 Laos",
+    "🇱🇧 Líbano", "🇲🇾 Malásia", "🇲🇻 Maldivas", "🇲🇳 Mongólia", "🇲🇲 Myanmar", "🇳🇵 Nepal",
+    "🇴🇲 Omã", "🇵🇰 Paquistão", "🇵🇭 Filipinas", "🇷🇺 Rússia", "🇹🇭 Tailândia",
+    "🇹🇱 Timor-Leste", "🇦🇪 Emirados Árabes", "🇺🇿 Uzbequistão", "🇻🇳 Vietname", "🇮🇱 Israel",
+    "🇯🇵 Japão", "🇯🇴 Jordânia", "🇮🇳 Índia", "🇮🇩 Indonésia", "🇮🇷 Irão", "🇮🇶 Iraque"
+]
+
+PAISES_EUROPA = [
+    "🇦🇱 Albânia", "🇩🇪 Alemanha", "🇦🇩 Andorra", "🇦🇹 Áustria", "🇧🇾 Bielorrússia",
+    "🇧🇪 Bélgica", "🇧🇦 Bósnia e Herzegovina", "🇧🇬 Bulgária", "🇭🇷 Croácia", "🇩🇰 Dinamarca",
+    "🇸🇰 Eslováquia", "🇸🇮 Eslovénia", "🇪🇸 Espanha", "🇪🇪 Estónia", "🇫🇮 Finlândia",
+    "🇫🇷 França", "🇬🇷 Grécia", "🇭🇺 Hungria", "🇮🇪 Irlanda", "🇮🇸 Islândia", "🇮🇹 Itália",
+    "🇽🇰 Kosovo", "🇱🇻 Letónia", "🇱🇮 Liechtenstein", "🇱🇹 Lituânia", "🇱🇺 Luxemburgo",
+    "🇲🇹 Malta", "🇲🇩 Moldávia", "🇲🇨 Mónaco", "🇲🇪 Montenegro", "🇳🇴 Noruega",
+    "🇳🇱 Países Baixos", "🇵🇱 Polónia", "🇵🇹 Portugal", "🇬🇧 Reino Unido", "🇨🇿 República Checa",
+    "🇷🇴 Roménia", "🇷🇺 Rússia", "🇸🇲 San Marino", "🇷🇸 Sérvia", "🇸🇪 Suécia", "🇨🇭 Suíça",
+    "🇺🇦 Ucrânia", "🇻🇦 Vaticano"
+]
+
+PAISES_OCEANIA = [
+    "🇦🇺 Austrália", "🇫🇯 Fiji", "🇰🇮 Quiribati", "🇲🇭 Ilhas Marshall", "🇫🇲 Micronésia",
+    "🇳🇦 Nauru", "🇳🇿 Nova Zelândia", "🇵🇼 Palau", "🇵🇬 Papua-Nova Guiné", "🇼🇸 Samoa",
+    "🇸🇧 Ilhas Salomão", "🇹🇴 Tonga", "🇹🇻 Tuvalu", "🇻🇺 Vanuatu"
+]
+
+# Sistema de paginação
+PAISES_POR_PAGINA = 20
+
+# ==================== SISTEMA DE BOTÕES E PAGINAÇÃO ====================
+
+def criar_keyboard_continentes():
+    """Cria keyboard com botões dos continentes"""
+    buttons = [
+        [InlineKeyboardButton("🌍 África (53 países)", callback_data="continente|africa|0")],
+        [InlineKeyboardButton("🌎 América do Norte (22 países)", callback_data="continente|america_norte|0")],
+        [InlineKeyboardButton("🌎 América do Sul (12 países)", callback_data="continente|america_sul|0")],
+        [InlineKeyboardButton("🌏 Ásia (38 países)", callback_data="continente|asia|0")],
+        [InlineKeyboardButton("🏰 Europa (44 países)", callback_data="continente|europa|0")],
+        [InlineKeyboardButton("🏝️ Oceania (14 países)", callback_data="continente|oceania|0")],
+        [InlineKeyboardButton("↩️ Voltar", callback_data="voltar_inicio")]
+    ]
+    return InlineKeyboardMarkup(buttons)
+
+def criar_keyboard_paises(continente, pagina=0):
+    """Cria keyboard paginado para seleção de países de um continente"""
+    
+    # Seleciona a lista de países do continente
+    if continente == "africa":
+        lista_paises = PAISES_AFRICA
+        nome_continente = "🌍 África"
+    elif continente == "america_norte":
+        lista_paises = PAISES_AMERICA_NORTE
+        nome_continente = "🌎 América do Norte"
+    elif continente == "america_sul":
+        lista_paises = PAISES_AMERICA_SUL
+        nome_continente = "🌎 América do Sul"
+    elif continente == "asia":
+        lista_paises = PAISES_ASIA
+        nome_continente = "🌏 Ásia"
+    elif continente == "europa":
+        lista_paises = PAISES_EUROPA
+        nome_continente = "🏰 Europa"
+    elif continente == "oceania":
+        lista_paises = PAISES_OCEANIA
+        nome_continente = "🏝️ Oceania"
+    else:
+        lista_paises = []
+        nome_continente = "🌍 Mundo"
+    
+    # Calcula índices da página
+    start_idx = pagina * PAISES_POR_PAGINA
+    end_idx = start_idx + PAISES_POR_PAGINA
+    paises_pagina = lista_paises[start_idx:end_idx]
+    
+    # Cria botões dos países (2 por linha)
+    keyboard = []
+    for i in range(0, len(paises_pagina), 2):
+        linha = []
+        if i < len(paises_pagina):
+            pais = paises_pagina[i]
+            # Remove o emoji para o callback_data
+            pais_limpo = ' '.join(pais.split()[1:])
+            linha.append(InlineKeyboardButton(pais, callback_data=f"selecionar_pais|{pais_limpo}"))
+        
+        if i + 1 < len(paises_pagina):
+            pais = paises_pagina[i + 1]
+            pais_limpo = ' '.join(pais.split()[1:])
+            linha.append(InlineKeyboardButton(pais, callback_data=f"selecionar_pais|{pais_limpo}"))
+        
+        if linha:
+            keyboard.append(linha)
+    
+    # Botões de navegação
+    nav_buttons = []
+    if pagina > 0:
+        nav_buttons.append(InlineKeyboardButton("⬅️ Anterior", callback_data=f"paises_pagina|{continente}|{pagina-1}"))
+    
+    if end_idx < len(lista_paises):
+        nav_buttons.append(InlineKeyboardButton("Próxima ➡️", callback_data=f"paises_pagina|{continente}|{pagina+1}"))
+    
+    if nav_buttons:
+        keyboard.append(nav_buttons)
+    
+    # Botão voltar para continentes
+    keyboard.append([InlineKeyboardButton("↩️ Voltar aos Continentes", callback_data="voltar_continentes")])
+    
+    return InlineKeyboardMarkup(keyboard), nome_continente, len(lista_paises)
+
+
+# ==================== HANDLERS DO SISTEMA DE PAÍSES ====================
+
+# 🆕 MODIFICAÇÃO NO iniciar_cadastro_cb - Agora mostra continentes
+async def iniciar_cadastro_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    msg = (
+        "🌍 *SELECIONE SEU CONTINENTE*\n\n"
+        "Escolha o continente onde você reside:\n\n"
+        "• 🌍 *África* - 53 países\n"
+        "• 🌎 *América do Norte* - 22 países\n" 
+        "• 🌎 *América do Sul* - 12 países\n"
+        "• 🌏 *Ásia* - 38 países\n"
+        "• 🏰 *Europa* - 44 países\n"
+        "• 🏝️ *Oceania* - 14 países\n\n"
+        "Total: 183 países disponíveis"
+    )
+    
+    markup = criar_keyboard_continentes()
+    
+    await query.edit_message_text(
+        msg,
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 HANDLER PARA SELECIONAR CONTINENTE
+async def continente_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    _, continente, pagina = query.data.split("|")
+    pagina = int(pagina)
+    
+    markup, nome_continente, total_paises = criar_keyboard_paises(continente, pagina)
+    
+    await query.edit_message_text(
+        f"*{nome_continente}* - {total_paises} países\n\nSelecione seu país:",
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 HANDLER PARA PAGINAÇÃO DE PAÍSES
+async def paises_pagina_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    _, continente, pagina = query.data.split("|")
+    pagina = int(pagina)
+    
+    markup, nome_continente, total_paises = criar_keyboard_paises(continente, pagina)
+    
+    await query.edit_message_text(
+        f"*{nome_continente}* - {total_paises} países\n\nSelecione seu país:",
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 HANDLER PARA SELECIONAR PAÍS
+async def selecionar_pais_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    uid = str(query.from_user.id)
+    _, pais_selecionado = query.data.split("|")
+    
+    # Encontra o emoji correspondente ao país
+    pais_com_emoji = None
+    todas_listas = [PAISES_AFRICA, PAISES_AMERICA_NORTE, PAISES_AMERICA_SUL, 
+                   PAISES_ASIA, PAISES_EUROPA, PAISES_OCEANIA]
+    
+    for lista in todas_listas:
+        for pais in lista:
+            if pais_selecionado in pais:
+                pais_com_emoji = pais
+                break
+        if pais_com_emoji:
+            break
+    
+    # Salva o país
+    usuarios[uid]["pais"] = pais_com_emoji or pais_selecionado
+    ctx.user_data["cadastro_passo"] = "telefone"
+    salvar_json(USERS_FILE, usuarios)
+    
+    await query.edit_message_text(
+        f"✅ *País selecionado: {pais_com_emoji or pais_selecionado}*\n\n"
+        "📞 *PASSO 2/3 - QUAL SEU TELEFONE?*\n\n"
+        "Digite seu número com código do país:\n"
+        "Exemplo: `+258 84 123 4567`\n\n"
+        "🔒 *Apenas para segurança*",
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+# 🆕 HANDLER VOLTAR PARA CONTINENTES
+async def voltar_continentes_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    await iniciar_cadastro_cb(update, ctx)
+    
 # 👇 Função start bem organizada:
 @checa_banido
 async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -217,45 +460,217 @@ async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = str(u.id)
     nome = u.first_name
 
+    # Se é novo usuário, inicia cadastro
     if uid not in usuarios:
         usuarios[uid] = {
             "nome": nome,
             "saldo": 0,
             "planos": [],
             "indicador": None,
-            "indicados": []
+            "indicados": [],
+            "cadastro_completo": False,
+            "pais": None,
+            "telefone": None,
+            "aceitou_termos": False,
+            "data_cadastro": datetime.now().strftime("%d/%m/%Y %H:%M")
         }
         salvar_json(USERS_FILE, usuarios)
+        
+        # Inicia processo de cadastro
+        return await iniciar_cadastro(update, ctx)
 
+    # Usuário já cadastrado - mostra menu normal
+    await mostrar_menu_principal(update, ctx, uid)
+
+async def mostrar_menu_principal(update: Update, ctx: ContextTypes.DEFAULT_TYPE, uid: str):
+    user = usuarios[uid]
     msg = (
-        f"🤖 *Bem-vindo ao {NOME_BOT}*, {nome}!\n\n"
-        f"Eu sou seu assistente de investimento.\n"
-        f"Estou aqui para fornecer informações valiosas e ajudá-lo a tomar decisões informadas "
-        f"sobre seus investimentos com segurança e transparência.\n\n"
-        f"💼 *Comandos úteis:* Use `/ajuda` para ver todos os comandos.\n\n"
-        f"📢 Para ficar por dentro das últimas tendências e análises do mercado, "
-        f"junte-se ao nosso canal oficial no Telegram:\n"
-        f"👉 [Canal Oficial](https://t.me/+ydQ0aKslT4lmYjVk)\n\n"
-        f"❓ Tem dúvidas ou precisa de ajuda? Fale com nosso suporte:\n"
-        f"👤 @Agroinvestlda\n\n"
-        f"Estamos ansiosos para ter você conosco. Vamos crescer juntos! 🚀"
+        f"👋 *Bem-vindo de volta ao {NOME_BOT}*, {user['nome']}!\n\n"
+        f"✅ *Cadastro Verificado:* {user.get('pais', 'Não informado')}\n"
+        f"📞 *Telefone:* {user.get('telefone', 'Não informado')}\n"
+        f"📅 *Membro desde:* {user.get('data_cadastro', 'Data não registrada')}\n\n"
+        f"📊 *Estatísticas da Plataforma:*\n"
+        f"• 👥 Usuários ativos: {len(usuarios)}\n"
+        f"• 💰 Total investido: {calcular_total_investido()} MZN\n"
+        f"• 📈 Investidores ativos: {contar_investidores_ativos()}\n\n"
+        f"🔒 *Plataforma 100% Segura e Verificada*"
     )
 
     buttons = [
-        [InlineKeyboardButton("📚 Ver Comandos", callback_data="ajuda")],
         [InlineKeyboardButton("💼 Ver Planos", callback_data="planos")],
-        [InlineKeyboardButton("📢 Canal Oficial", url="https://t.me/+ydQ0aKslT4lmYjVk")],
-        [InlineKeyboardButton("👤 Suporte", url="https://t.me/Agroinvestlda")]
+        [InlineKeyboardButton("💰 Meu Saldo", callback_data="saldo")],
+        [InlineKeyboardButton("👤 Meu Perfil", callback_data="meu_perfil")],
+        [InlineKeyboardButton("📊 Estatísticas", callback_data="estatisticas")],
+        [InlineKeyboardButton("🔒 Certificado", callback_data="certificado")],
+        [InlineKeyboardButton("👥 Suporte", url="https://t.me/Agroinvestlda")]
     ]
     markup = InlineKeyboardMarkup(buttons)
 
-    # Compatível com /start chamado por mensagem ou botão:
     target = update.message or update.callback_query.message
     await target.reply_text(
         msg,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=markup
     )
+
+# 🆕 FUNÇÃO DE CADASTRO COMPLETO
+async def iniciar_cadastro(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    uid = str(update.effective_user.id)
+    
+    msg = (
+        "🛡️ *CADASTRO - AGROTECH FUND* 🛡️\n\n"
+        "Para sua segurança, complete seu cadastro em 2 minutos.\n\n"
+        "📋 *Vamos precisar de:*\n"
+        "• 🌍 Seu país\n"
+        "• 📞 Seu telefone\n"
+        "• ✅ Aceitação dos termos\n\n"
+        "🔒 *Dados 100% protegidos*"
+    )
+    
+    buttons = [
+        [InlineKeyboardButton("🌍 Iniciar Cadastro", callback_data="iniciar_cadastro")],
+        [InlineKeyboardButton("📜 Ler Termos", url="https://telegra.ph/Termos-de-Uso-Agrotech-Fund-11-01")]
+    ]
+    markup = InlineKeyboardMarkup(buttons)
+    
+    target = update.message or update.callback_query.message
+    await target.reply_text(
+        msg,
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 CALLBACK PARA INICIAR CADASTRO
+async def iniciar_cadastro_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    uid = str(query.from_user.id)
+    ctx.user_data["cadastro_passo"] = "pais"
+    
+    await query.edit_message_text(
+        "🌍 *PASSO 1/3 - QUAL SEU PAÍS?*\n\n"
+        "Digite seu país de residência:\n"
+        "Exemplo: `Moçambique`, `Portugal`, `Brasil`",
+        parse_mode=ParseMode.MARKDOWN
+    )
+
+# 🆕 HANDLER PARA CAPTURAR DADOS DO CADASTRO (VERSÃO CORRIGIDA)
+async def capturar_dados_cadastro(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    if not ctx.user_data.get("cadastro_passo"):
+        return  # Não está em processo de cadastro
+    
+    uid = str(update.effective_user.id)
+    texto = update.message.text.strip()
+    passo = ctx.user_data.get("cadastro_passo")
+    
+    # 👇 REMOVEMOS a parte do "pais" - agora só captura TELEFONE
+    if passo == "telefone":
+        # Salva telefone
+        usuarios[uid]["telefone"] = texto
+        ctx.user_data["cadastro_passo"] = "termos"
+        salvar_json(USERS_FILE, usuarios)  # ✅ Salva a cada passo
+        
+        buttons = [
+            [InlineKeyboardButton("✅ Aceitar Termos", callback_data="aceitar_termos")],
+            [InlineKeyboardButton("📜 Ler Termos", url="https://telegra.ph/Termos-de-Uso-Agrotech-Fund-11-01")]
+        ]
+        markup = InlineKeyboardMarkup(buttons)
+        
+        await update.message.reply_text(
+            "✅ *Telefone registrado!*\n\n"
+            "📋 *PASSO 3/3 - TERMOS DE USO*\n\n"
+            "Leia nossos termos e clique em *ACEITAR*:\n\n"
+            "📖 *Principais pontos:*\n"
+            "• Idade mínima: 16 anos\n"
+            "• Uso pessoal apenas\n"
+            "• Investimentos com responsabilidade\n"
+            "• Sua segurança garantida",
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=markup
+        )
+
+# 🆕 ACEITAR TERMOS
+async def aceitar_termos_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    uid = str(query.from_user.id)
+    usuarios[uid]["aceitou_termos"] = True
+    usuarios[uid]["cadastro_completo"] = True
+    usuarios[uid]["data_cadastro"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+    
+    salvar_json(USERS_FILE, usuarios)  # ✅ Salva final
+    
+    # Mensagem de boas-vindas final
+    msg = (
+        "🎉 *CADASTRO CONCLUÍDO!* 🎉\n\n"
+        f"👋 Bem-vindo ao *{NOME_BOT}*, {usuarios[uid]['nome']}!\n\n"
+        "✅ *Seu cadastro foi aprovado:*\n"
+        f"• 🌍 País: {usuarios[uid]['pais']}\n"
+        f"• 📞 Telefone: {usuarios[uid]['telefone']}\n"
+        f"• 📅 Desde: {usuarios[uid]['data_cadastro']}\n\n"
+        "🛡️ *Conta Verificada - Segurança Máxima*\n\n"
+        "💼 *Agora você pode investir com segurança!*"
+    )
+    
+    buttons = [
+        [InlineKeyboardButton("💼 Ver Planos", callback_data="planos")],
+        [InlineKeyboardButton("💰 Como Investir", callback_data="como_investir")],
+        [InlineKeyboardButton("👤 Meu Perfil", callback_data="meu_perfil")],
+        [InlineKeyboardButton("👥 Suporte", url="https://t.me/Agroinvestlda")]
+    ]
+    markup = InlineKeyboardMarkup(buttons)
+    
+    await query.edit_message_text(
+        msg,
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 COMANDO PARA VER PERFIL
+async def meu_perfil_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    uid = str(query.from_user.id)
+    user = usuarios[uid]
+    
+    msg = (
+        f"👤 *MEU PERFIL - {NOME_BOT}*\n\n"
+        f"📛 *Nome:* {user['nome']}\n"
+        f"🌍 *País:* {user.get('pais', 'Não informado')}\n"
+        f"📞 *Telefone:* {user.get('telefone', 'Não informado')}\n"
+        f"📅 *Cadastro:* {user.get('data_cadastro', 'Não registrado')}\n"
+        f"💰 *Saldo:* {user.get('saldo', 0)} MZN\n"
+        f"📈 *Planos Ativos:* {len(user.get('planos', []))}\n"
+        f"👥 *Indicados:* {len(user.get('indicados', []))}\n\n"
+        f"🛡️ *Status: {'✅ Verificado' if user.get('cadastro_completo') else '⏳ Pendente'}*"
+    )
+    
+    buttons = [
+        [InlineKeyboardButton("💼 Planos", callback_data="planos")],
+        [InlineKeyboardButton("💰 Saldo", callback_data="saldo")],
+        [InlineKeyboardButton("⬅️ Voltar", callback_data="voltar_inicio")]
+    ]
+    markup = InlineKeyboardMarkup(buttons)
+    
+    await query.edit_message_text(
+        msg,
+        parse_mode=ParseMode.MARKDOWN,
+        reply_markup=markup
+    )
+
+# 🆕 FUNÇÕES AUXILIARES
+def calcular_total_investido():
+    total = 0
+    for user in usuarios.values():
+        for plano in user.get("planos", []):
+            total += plano.get("valor", 0)
+    return total
+
+def contar_investidores_ativos():
+    return len([user for user in usuarios.values() if user.get("planos")])
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.constants import ParseMode
@@ -6745,6 +7160,21 @@ async def iniciar_bot():
 # ==========================
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, processar_senha_saque))
 
+# Handlers para o sistema de países por continentes
+app.add_handler(CallbackQueryHandler(continente_cb, pattern="^continente\|"))
+app.add_handler(CallbackQueryHandler(paises_pagina_cb, pattern="^paises_pagina\|"))
+app.add_handler(CallbackQueryHandler(selecionar_pais_cb, pattern="^selecionar_pais\|"))
+app.add_handler(CallbackQueryHandler(voltar_continentes_cb, pattern="voltar_continentes"))
+
+# Handlers para o cadastro (já existentes, mas confirmar)
+app.add_handler(CallbackQueryHandler(iniciar_cadastro_cb, pattern="iniciar_cadastro"))
+app.add_handler(CallbackQueryHandler(aceitar_termos_cb, pattern="aceitar_termos"))
+app.add_handler(CallbackQueryHandler(meu_perfil_cb, pattern="meu_perfil"))
+app.add_handler(CallbackQueryHandler(mostrar_menu_principal, pattern="voltar_inicio"))
+
+# Handler para capturar telefone (MANTENHA este)
+app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, capturar_dados_cadastro))
+    
 # ==========================
 # Callback dos botões
 # ==========================
