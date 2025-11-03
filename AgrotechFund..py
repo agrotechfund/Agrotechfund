@@ -44,7 +44,7 @@ from telegram.ext.filters import User as FilterUser
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # ✅ Configuração de variáveis de ambiente
-TOKEN = os.getenv("BOT_TOKEN") or "8077908640:AAHSkV9dooJLJtPN-XrAEosHQVWpIkjBgPg"
+TOKEN = os.getenv("BOT_TOKEN") or "8144809586:AAGhXwZ4Tz-vk65_D546ma6nhbeBh_bf7OQ"
 ADMIN_ID = int(os.getenv("ADMIN_ID") or "8182769178")
 
 # ✅ Caminhos dos arquivos JSON
@@ -163,7 +163,7 @@ def get_planos_disponiveis():
     }
 
 # 🔝 Em cima junto com TOKEN, ADMIN_ID:
-NOME_BOT = "AgrotechFund_bot"
+NOME_BOT = "AgrotechFundBot"
 
 # --- VERIFICAÇÃO DE BANIMENTO ---
 def checa_banido(func):
