@@ -7160,17 +7160,19 @@ async def iniciar_bot():
 # ==========================
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, processar_senha_saque))
 
- # Handlers para o sistema de países por contine
-    app.add_handler(CallbackQueryHandler(continente_cb, pattern="continente="))
-    app.add_handler(CallbackQueryHandler(paises_pagina_cb, pattern="paises_pagina"))
-    app.add_handler(CallbackQueryHandler(selecionar_pais_cb, pattern="selecionar_pais"))
-    app.add_handler(CallbackQueryHandler(voltar_continentes_cb, pattern="voltar_continentes"))
+ # Handlers para o sistema de países por continente
+    app.add_handler(CallbackQueryHandler(continente_cb, pattern="^continente\|"))
+    app.add_handler(CallbackQueryHandler(paises_pagina_cb, pattern="^paises_pagina\|"))
+    app.add_handler(CallbackQueryHandler(selecionar_pais_cb, pattern="^selecionar_pais\|"))
+    app.add_handler(CallbackQueryHandler(voltar_continentes_cb, pattern="^voltar_continentes$"))
 
-# Handlers para o cadastro (já existentes, mas confirmar)
-    app.add_handler(CallbackQueryHandler(iniciar_cadastro_cb, pattern="iniciar_cadastro"))
-    app.add_handler(CallbackQueryHandler(aceitar_termos_cb, pattern="aceitar_termos"))
-    app.add_handler(CallbackQueryHandler(meu_perfil_cb, pattern="meu_perfil"))
-    app.add_handler(CallbackQueryHandler(mostrar_menu_principal, pattern="voltar_inicio"))
+# Handlers do cadastro
+    app.add_handler(CallbackQueryHandler(iniciar_cadastro_cb, pattern="^iniciar_cadastro$"))
+    app.add_handler(CallbackQueryHandler(aceitar_termos_cb, pattern="^aceitar_termos$"))
+    app.add_handler(CallbackQueryHandler(meu_perfil_cb, pattern="^meu_perfil$"))
+    app.add_handler(CallbackQueryHandler(mostrar_menu_principal, pattern="^voltar_inicio$"))
+
+# Handler para capturar telefone (COLOCAR ANTES de outros handlers de texto)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, capturar_dados_cadastro))
     
 # ==========================
