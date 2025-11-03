@@ -554,21 +554,6 @@ async def iniciar_cadastro(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         reply_markup=markup
     )
 
-# 🆕 CALLBACK PARA INICIAR CADASTRO
-async def iniciar_cadastro_cb(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-    
-    uid = str(query.from_user.id)
-    ctx.user_data["cadastro_passo"] = "pais"
-    
-    await query.edit_message_text(
-        "🌍 *PASSO 1/3 - QUAL SEU PAÍS?*\n\n"
-        "Digite seu país de residência:\n"
-        "Exemplo: `Moçambique`, `Portugal`, `Brasil`",
-        parse_mode=ParseMode.MARKDOWN
-    )
-
 # 🆕 HANDLER PARA CAPTURAR DADOS DO CADASTRO (VERSÃO CORRIGIDA)
 async def capturar_dados_cadastro(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if not ctx.user_data.get("cadastro_passo"):
