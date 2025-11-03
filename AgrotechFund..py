@@ -6987,10 +6987,6 @@ async def deletar_arquivos_command(update: Update, context: ContextTypes.DEFAULT
     deletar_arquivos_json()
     await update.message.reply_text("🗑️ TODOS os arquivos JSON foram deletados!")
 
-# Registrar os comandos
-application.add_handler(CommandHandler("limpar", limpar_dados_command))
-application.add_handler(CommandHandler("deletartudo", deletar_arquivos_command))
-
 # ✅ FUNÇÃO PRINCIPAL ASSÍNCRONA
 async def iniciar_bot():
     global usuarios, pendentes
