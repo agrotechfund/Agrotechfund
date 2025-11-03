@@ -6894,6 +6894,103 @@ def manter_online():
 # Inicia em thread separada
 threading.Thread(target=manter_online, daemon=True).start()
 
+import json
+import os
+
+# Lista de todos os seus arquivos JSON
+ARQUIVOS_JSON = [
+    "usuarios.json",
+    "pendentes.json", 
+    "codigos.json"
+]
+
+def limpar_todos_dados():
+    """Limpa completamente todos os dados dos arquivos JSON"""
+    
+    for arquivo in ARQUIVOS_JSON:
+        try:
+            # Limpa o arquivo local
+            with open(arquivo, 'w', encoding='utf-8') as f:
+                json.dump({}, f, ensure_ascii=False, indent=4)
+            print(f"✅ Dados limpos de: {arquivo}")
+            
+            # Se tiver GitHub token, também limpa no GitHub
+            if os.getenv("GITHUB_TOKEN"):
+                try:
+                    salvar_no_github(arquivo, {})
+                    print(f"✅ GitHub limpo: {arquivo}")
+                except Exception as e:
+                    print(f"⚠️  Erro ao limpar GitHub {arquivo}: {e}")
+                    
+        except Exception as e:
+            print(f"❌ Erro ao limpar {arquivo}: {e}")
+
+def deletar_arquivos_json():
+    """Deleta completamente os arquivos JSON (mais radical)"""
+    
+    for arquivo in ARQUIVOS_JSON:
+        try:
+            if os.path.exists(arquivo):
+                os.remove(arquivo)
+                print(f"🗑️  Arquivo deletado: {arquivo}")
+        except Exception as e:
+            print(f"❌ Erro ao deletar {arquivo}: {e}")
+
+# FUNÇÕES GITHUB (já existem no seu código)
+def salvar_no_github(arquivo, dados):
+    """Salva dados no GitHub"""
+    try:
+        token = os.getenv("GITHUB_TOKEN")
+        repo = "agrotechfund/Agrotechfund"
+        
+        conteudo = json.dumps(dados, indent=2, ensure_ascii=False)
+        url = f"https://api.github.com/repos/{repo}/contents/{arquivo}"
+        headers = {"Authorization": f"token {token}", "Content-Type": "application/json"}
+        
+        # Verifica se arquivo já existe
+        response = requests.get(url, headers=headers)
+        sha = response.json()["sha"] if response.status_code == 200 else None
+        
+        data = {
+            "message": f"Limpeza automática: {arquivo}",
+            "content": base64.b64encode(conteudo.encode()).decode(),
+            "sha": sha
+        }
+        
+        response = requests.put(url, headers=headers, json=data)
+        return response.status_code == 200
+    except Exception as e:
+        raise Exception(f"Erro GitHub: {e}")
+
+from telegram.ext import CommandHandler
+
+# Comando para admin limpar todos os dados
+async def limpar_dados_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    
+    # Verifica se é admin
+    if user_id != ADMIN_ID:
+        await update.message.reply_text("❌ Apenas administradores podem usar este comando.")
+        return
+    
+    limpar_todos_dados()
+    await update.message.reply_text("✅ TODOS os dados foram limpos com sucesso!")
+
+# Comando para deletar arquivos (mais radical)
+async def deletar_arquivos_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    
+    if user_id != ADMIN_ID:
+        await update.message.reply_text("❌ Apenas administradores podem usar este comando.")
+        return
+    
+    deletar_arquivos_json()
+    await update.message.reply_text("🗑️ TODOS os arquivos JSON foram deletados!")
+
+# Registrar os comandos
+application.add_handler(CommandHandler("limpar", limpar_dados_command))
+application.add_handler(CommandHandler("deletartudo", deletar_arquivos_command))
+
 # ✅ FUNÇÃO PRINCIPAL ASSÍNCRONA
 async def iniciar_bot():
     global usuarios, pendentes
@@ -6916,6 +7013,8 @@ async def iniciar_bot():
     app.add_handler(CommandHandler("baixar_usuarios", baixar_usuarios))
     app.add_handler(CommandHandler("ver_pendentes", ver_pendentes))
     app.add_handler(CommandHandler("limpar_saldo_corrompido", limpar_saldo_corrompido))
+    app.add_handler(CommandHandler("limpar", limpar_dados_command))
+    app.add_handler(CommandHandler("deletartudo", deletar_arquivos_command))
     
     app.add_handler(CallbackQueryHandler(abrir_menu_cb, pattern="abrir_menu"))
     
